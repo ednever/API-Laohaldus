@@ -13,6 +13,12 @@ namespace API_Laohaldus.Controllers
         public KategooriaController(ApplicationDbContext context)
         {
             _context = context;
+        }       
+
+        [HttpGet]
+        public List<Kategooria> Get()
+        {
+            return _context.Kategooriad.ToList();
         }
     }
 }
