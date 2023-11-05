@@ -14,5 +14,17 @@ namespace API_Laohaldus.Controllers
         {
             _context = context;
         }
+
+        [HttpGet("{kategooriaId}")]
+        public List<Toode> GetByKategooriaID(int kategooriaId)
+        {
+            List<Toode> tootedKategoorias = new List<Toode>();
+            foreach (Toode toode in _context.Tooted)
+            {
+                if (toode.KategooriaId == kategooriaId)
+                    tootedKategoorias.Add(toode);
+            }
+            return tootedKategoorias;
+        }
     }
 }
