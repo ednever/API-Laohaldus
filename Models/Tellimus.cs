@@ -3,13 +3,15 @@
     public class Tellimus
     {
         public int Id { get; set; }
-        public int TooteId { get; set; }
+        public int ToodeId { get; set; }
         public int Kogus { get; set; }
+        public int KasutajaId { get; set; }       
         public ICollection<TellimusArves> TellimusArves { get; }
-        public Tellimus(int tooteId, int kogus) 
+        public Tellimus(int toodeId, int kogus, int kasutajaId) 
         { 
-            TooteId = tooteId;
+            ToodeId = toodeId;
             Kogus = kogus;
+            KasutajaId = kasutajaId;
         }
     }
 }

@@ -6,11 +6,24 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace API_Laohaldus.Migrations
 {
     /// <inheritdoc />
-    public partial class @base : Migration
+    public partial class newBase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Arved",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Kuupaev = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Arved", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Kasutajad",
                 columns: table => new
@@ -19,7 +32,8 @@ namespace API_Laohaldus.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Kasutajanimi = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     E_post = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Parool = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Parool = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsAdmin = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -32,31 +46,12 @@ namespace API_Laohaldus.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nimetus = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Nimetus = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Pilt = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Kategooriad", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Arved",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    KasutajaId = table.Column<int>(type: "int", nullable: false),
-                    Kuupaev = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Arved", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Arved_Kasutajad_KasutajaId",
-                        column: x => x.KasutajaId,
-                        principalTable: "Kasutajad",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -88,18 +83,25 @@ namespace API_Laohaldus.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TooteId = table.Column<int>(type: "int", nullable: false),
+                    ToodeId = table.Column<int>(type: "int", nullable: false),
                     Kogus = table.Column<int>(type: "int", nullable: false),
-                    ToodeId = table.Column<int>(type: "int", nullable: true)
+                    KasutajaId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tellimused", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Tellimused_Kasutajad_KasutajaId",
+                        column: x => x.KasutajaId,
+                        principalTable: "Kasutajad",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Tellimused_Tooted_ToodeId",
                         column: x => x.ToodeId,
                         principalTable: "Tooted",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -129,8 +131,8 @@ namespace API_Laohaldus.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Arved_KasutajaId",
-                table: "Arved",
+                name: "IX_Tellimused_KasutajaId",
+                table: "Tellimused",
                 column: "KasutajaId");
 
             migrationBuilder.CreateIndex(

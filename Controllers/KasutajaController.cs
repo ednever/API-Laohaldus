@@ -21,7 +21,7 @@ namespace API_Laohaldus.Controllers
             foreach (Kasutaja kasutaja in _context.Kasutajad)
             {
                 if (kasutaja.E_post == email && kasutaja.Parool == password)
-                    return kasutaja.Kasutajanimi;
+                    return kasutaja.Kasutajanimi + "," + kasutaja.IsAdmin;
             }
             return null;
         }
@@ -31,7 +31,7 @@ namespace API_Laohaldus.Controllers
         {
             if (!_context.Kasutajad.Where(kasutaja => kasutaja.E_post == email).Any())
             {
-                _context.Kasutajad.Add(new Kasutaja(username, email, password));
+                _context.Kasutajad.Add(new Kasutaja(username, email, password, false));
                 _context.SaveChanges();
                 return true;
             }            

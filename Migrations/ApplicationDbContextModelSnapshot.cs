@@ -30,15 +30,10 @@ namespace API_Laohaldus.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("KasutajaId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("Kuupaev")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("KasutajaId");
 
                     b.ToTable("Arved");
                 });
@@ -54,6 +49,9 @@ namespace API_Laohaldus.Migrations
                     b.Property<string>("E_post")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Kasutajanimi")
                         .IsRequired()
@@ -97,16 +95,18 @@ namespace API_Laohaldus.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("KasutajaId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Kogus")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ToodeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TooteId")
+                    b.Property<int>("ToodeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("KasutajaId");
 
                     b.HasIndex("ToodeId");
 
@@ -168,20 +168,19 @@ namespace API_Laohaldus.Migrations
                     b.ToTable("Tooted");
                 });
 
-            modelBuilder.Entity("API_Laohaldus.Models.Arve", b =>
+            modelBuilder.Entity("API_Laohaldus.Models.Tellimus", b =>
                 {
                     b.HasOne("API_Laohaldus.Models.Kasutaja", null)
-                        .WithMany("Arve")
+                        .WithMany("Tellimus")
                         .HasForeignKey("KasutajaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
 
-            modelBuilder.Entity("API_Laohaldus.Models.Tellimus", b =>
-                {
                     b.HasOne("API_Laohaldus.Models.Toode", null)
                         .WithMany("Tellimus")
-                        .HasForeignKey("ToodeId");
+                        .HasForeignKey("ToodeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("API_Laohaldus.Models.TellimusArves", b =>
@@ -215,7 +214,7 @@ namespace API_Laohaldus.Migrations
 
             modelBuilder.Entity("API_Laohaldus.Models.Kasutaja", b =>
                 {
-                    b.Navigation("Arve");
+                    b.Navigation("Tellimus");
                 });
 
             modelBuilder.Entity("API_Laohaldus.Models.Kategooria", b =>

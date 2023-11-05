@@ -20,5 +20,15 @@ namespace API_Laohaldus.Controllers
         {
             return _context.Kategooriad.ToList();
         }
+
+        [HttpGet("{id}")]
+        public string GetNameByID(int id)
+        {
+            var kategooria = _context.Kategooriad.Find(id);
+            if (kategooria != null)
+                return kategooria.Nimetus;    
+            
+            return null;
+        }
     }
 }

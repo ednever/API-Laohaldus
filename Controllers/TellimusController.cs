@@ -32,10 +32,10 @@ namespace API_Laohaldus.Controllers
             return tellimus;
         }
 
-        [HttpPost("lisa/{tooteId}/{kogus}")]
-        public List<Tellimus> Add(int tooteId, int kogus)
+        [HttpPost("lisa/{tooteId}/{kogus}/{kasutajaId}")]
+        public List<Tellimus> Add(int tooteId, int kogus, int kasutajaId)
         {
-            _context.Tellimused.Add(new Tellimus(tooteId, kogus));
+            _context.Tellimused.Add(new Tellimus(tooteId, kogus, kasutajaId));
             _context.SaveChanges();           
 
             return _context.Tellimused.ToList();
