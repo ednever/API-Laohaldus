@@ -15,30 +15,45 @@ namespace API_Laohaldus.Controllers
             _context = context;
         }
 
-        [HttpGet]
+        /*[HttpGet]
         public List<Tellimus> Get()
         {
             return _context.Tellimused.ToList();
+        }*/
+
+        [HttpGet("{kasutajaEmail}")]
+        public List<Tellimus> GetByKasutajaEmail(string kasutajaEmail)
+        {
+            if (_context.Kasutajad.Where(kasutaja => kasutaja.E_post == kasutajaEmail).Any())
+            {
+                var kasutaja = _context.Kasutajad.FirstOrDefault(obj => obj.E_post == kasutajaEmail);
+
+                List<Tellimus> tellimusedKasutajal = new List<Tellimus>();
+                foreach (Tellimus tellimus in _context.Tellimused)
+                {
+                    if (tellimus.KasutajaId == kasutaja.Id)
+                        tellimusedKasutajal.Add(tellimus);
+                }
+                return tellimusedKasutajal;
+            }
+            return null;
         }
 
-        [HttpGet("{id}")] 
-        public Tellimus GetByID(int id)
+        [HttpPost("lisa/{tooteId}/{kogus}/{kasutajaEmail}")]
+        public bool Add(int toodeId, int kogus, string kasutajaEmail)
         {
-            var tellimus = _context.Tellimused.Find(id);
+            var kasutaja = _context.Kasutajad.FirstOrDefault(obj => obj.E_post == kasutajaEmail);
+            foreach (Tellimus tellimus in _context.Tellimused)
+            {
+                if (tellimus.ToodeId == toodeId && tellimus.Kogus == kogus && tellimus.KasutajaId == kasutaja.Id)
+                {
+                    return false;
+                }
+            }
+            _context.Tellimused.Add(new Tellimus(toodeId, kogus, kasutaja.Id));
+            _context.SaveChanges();
 
-            if (tellimus == null)
-                return null;
-
-            return tellimus;
-        }
-
-        [HttpPost("lisa/{tooteId}/{kogus}/{kasutajaId}")]
-        public List<Tellimus> Add(int tooteId, int kogus, int kasutajaId)
-        {
-            _context.Tellimused.Add(new Tellimus(tooteId, kogus, kasutajaId));
-            _context.SaveChanges();           
-
-            return _context.Tellimused.ToList();
+            return true;           
         }
 
         [HttpDelete("kustuta/{id}")]
@@ -54,7 +69,7 @@ namespace API_Laohaldus.Controllers
             return _context.Tellimused.ToList();
         }
 
-        [HttpPut("muuda/{id}")]
+        /*[HttpPut("muuda/{id}")]
         public Tellimus ChangeActive(int id)
         {
             var tellimus = _context.Tellimused.Find(id);
@@ -66,6 +81,6 @@ namespace API_Laohaldus.Controllers
             _context.SaveChanges();
 
             return tellimus;
-        }
+        }*/
     }
 }

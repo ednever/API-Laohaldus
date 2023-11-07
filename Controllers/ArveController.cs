@@ -14,5 +14,14 @@ namespace API_Laohaldus.Controllers
         {
             _context = context;
         }
+
+        [HttpPost("lisa")]
+        public bool Add()
+        {
+            _context.Arved.Add(new Arve(DateTime.Now));
+            _context.SaveChanges();
+
+            return true;
+        }
     }
 }
