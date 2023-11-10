@@ -39,7 +39,7 @@ namespace API_Laohaldus.Controllers
             return null;
         }
 
-        [HttpPost("lisa/{tooteId}/{kogus}/{kasutajaEmail}")]
+        [HttpPost("lisa/{toodeId}/{kogus}/{kasutajaEmail}")]
         public bool Add(int toodeId, int kogus, string kasutajaEmail)
         {
             var kasutaja = _context.Kasutajad.FirstOrDefault(obj => obj.E_post == kasutajaEmail);

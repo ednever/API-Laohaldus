@@ -19,18 +19,20 @@ namespace API_Laohaldus.Controllers
         [HttpPost("lisa")]
         public bool Add([FromBody] string[] massiiv)
         {
-            int[] tootedId = new int[massiiv.Length];
-            //int[] kogusId = new int[massiiv.Length];
+            /*int[] beforeDotArray = new int[massiiv.Length];
+            int[] afterDotArray = new int[massiiv.Length];
 
             for (int i = 0; i < massiiv.Length; i++)
             {
                 string[] parts = massiiv[i].Split('.');
 
-                tootedId[i] = int.Parse(parts[0]);
-                //kogusId[i] = int.Parse(parts[1]);
-            }
+                beforeDotArray[i] = beforeDecimal;
+                afterDotArray[i] = afterDecimal;
 
-            /*foreach (int toodeid in tootedId)
+
+            }*/
+
+            /*foreach (int toodeid in massiiv)
             {
                 var tellimus = _context.Tellimused.FirstOrDefault(obj => obj.ToodeId == toodeid);
                 _context.TellimusedArves.Add(new TellimusArves(tellimus.Id, _context.Arved.ToList().Last().Id));
