@@ -13,6 +13,10 @@ namespace API_Laohaldus.Controllers
         public KasutajaController(ApplicationDbContext context)
         {
             _context = context;
+            //Test
+            //_context.Kasutajad.Add(new Kasutaja("Admin", "admin@tthk.ee", "qwerty", true));
+            //_context.Kasutajad.Add(new Kasutaja("User", "user@tthk.ee", "qwerty", false));
+            //_context.SaveChanges();
         }
 
         [HttpGet("kontroll/{email}/{password}")]
