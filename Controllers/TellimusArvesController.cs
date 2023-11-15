@@ -19,30 +19,24 @@ namespace API_Laohaldus.Controllers
         [HttpPost("lisa")]
         public bool Add([FromBody] string[] massiiv)
         {
-            /*int[] beforeDotArray = new int[massiiv.Length];
-            int[] afterDotArray = new int[massiiv.Length];
 
             for (int i = 0; i < massiiv.Length; i++)
             {
                 string[] parts = massiiv[i].Split('.');
 
-                beforeDotArray[i] = beforeDecimal;
-                afterDotArray[i] = afterDecimal;
-
-
-            }*/
-
-            /*foreach (int toodeid in massiiv)
-            {
-                var tellimus = _context.Tellimused.FirstOrDefault(obj => obj.ToodeId == toodeid);
-                _context.TellimusedArves.Add(new TellimusArves(tellimus.Id, _context.Arved.ToList().Last().Id));
+                foreach (var tellimus in _context.Tellimused)
+                {
+                    if (tellimus.ToodeId == int.Parse(parts[0]) && tellimus.Kogus == int.Parse(parts[1]))
+                    {
+                        _context.TellimusedArves.Add(new TellimusArves(tellimus.Id, _context.Arved.ToList().Last().Id));
+                        _context.SaveChanges();
+                    }
+                }               
             }
-            _context.SaveChanges();*/
+            //Пофиксить баг с добавлением в базу данных >>> попробовать добавлять список в бд
+            //Осталось затестить "1.2", "5.1"
 
             return true;
         }
     }
 }
-
-//<?php if (isset($_GET['code'])) { die(highlight_file(__FILE__, 1)); } ?>
-//Добавить ссылку на XML файл
