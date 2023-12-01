@@ -19,23 +19,26 @@ namespace API_Laohaldus.Controllers
         [HttpPost("lisa")]
         public bool Add([FromBody] string[] massiiv)
         {
-
+            int[] tellimusId = new int[massiiv.Length];
             for (int i = 0; i < massiiv.Length; i++)
             {
                 string[] parts = massiiv[i].Split('.');
-
+                
                 foreach (var tellimus in _context.Tellimused)
                 {
-                    if (tellimus.ToodeId == int.Parse(parts[0]) && tellimus.Kogus == int.Parse(parts[1]))
+                    if (tellimus.ToodeId == int.Parse(parts[0])) // && tellimus.Kogus == int.Parse(parts[1])
                     {
-                        _context.TellimusedArves.Add(new TellimusArves(tellimus.Id, _context.Arved.ToList().Last().Id));
-                        _context.SaveChanges();
-                    }
-                }               
-            }
-            //Пофиксить баг с добавлением в базу данных >>> попробовать добавлять список в бд
-            //Осталось затестить "1.2", "5.1"
+                        tellimusId[i] = tellimus.Id;
 
+                    }
+                }
+            }
+
+            foreach (var id in tellimusId) 
+            {
+                _context.TellimusedArves.Add(new TellimusArves(id, _context.Arved.ToList().Last().Id));
+            }
+            _context.SaveChanges();
             return true;
         }
     }

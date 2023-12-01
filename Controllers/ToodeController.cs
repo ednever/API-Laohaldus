@@ -22,7 +22,17 @@ namespace API_Laohaldus.Controllers
             //_context.SaveChanges();
         }
 
-        [HttpGet("{kategooriaId}")]
+        [HttpGet("{id}")]
+        public Toode GetByID(int id)
+        {
+            var toode = _context.Tooted.Find(id);
+            if (toode != null)
+                return toode;
+
+            return null;
+        }
+
+        [HttpGet("kat/{kategooriaId}")]
         public List<Toode> GetByKategooriaID(int kategooriaId)
         {
             List<Toode> tootedKategoorias = new List<Toode>();
