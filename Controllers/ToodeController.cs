@@ -21,7 +21,11 @@ namespace API_Laohaldus.Controllers
             //_context.Tooted.Add(new Toode("Voodi 5", 1, "tk", 150, "https://asanastore.ru/images/virtuemart/product/Krovat-Noli-nedorogo.jpg", 1));
             //_context.SaveChanges();
         }
-
+        [HttpGet]
+        public List<Toode> Get()
+        {
+            return _context.Tooted.ToList();
+        }
         [HttpGet("{id}")]
         public Toode GetByID(int id)
         {
@@ -41,7 +45,53 @@ namespace API_Laohaldus.Controllers
                 if (toode.KategooriaId == kategooriaId)
                     tootedKategoorias.Add(toode);
             }
-            return tootedKategoorias;
+            return tootedKategoorias; 
+        }
+        [HttpPost]
+        public List<Toode> Add([FromBody] string[] massiiv)
+        {
+            foreach (Toode toode in _context.Tooted)
+            {
+                if (toode.Nimetus == massiiv[0])
+                {
+                    return _context.Tooted.ToList();
+                }
+            }
+            _context.Tooted.Add(new Toode(massiiv[0], int.Parse(massiiv[1]), massiiv[2], decimal.Parse(massiiv[3]), massiiv[4], int.Parse(massiiv[5])));
+            _context.SaveChanges();
+
+            return _context.Tooted.ToList();
+        }
+        [HttpDelete("{id}")]
+        public List<Toode> Delete(int id)
+        {
+            var toode = _context.Tooted.Find(id);
+
+            if (toode == null)
+                return _context.Tooted.ToList();
+            
+            _context.Tooted.Remove(toode);
+            _context.SaveChanges();
+            return _context.Tooted.ToList();
+        }
+        [HttpPut]
+        public List<Toode> Update([FromBody] string[] massiiv)
+        {
+            var toode = _context.Tooted.Find(int.Parse(massiiv[0]));
+
+            if (toode == null)
+                return _context.Tooted.ToList();
+
+            toode.Nimetus = massiiv[1];
+            toode.Kogus = int.Parse(massiiv[2]);
+            toode.Uhik = massiiv[3];
+            toode.Hind = decimal.Parse(massiiv[4]);
+            toode.Pilt = massiiv[5];
+            toode.KategooriaId = int.Parse(massiiv[6]);
+
+            _context.Tooted.Update(toode);
+            _context.SaveChanges();
+            return _context.Tooted.ToList();
         }
     }
 }
