@@ -87,7 +87,8 @@ namespace API_Laohaldus.Controllers
             toode.Uhik = massiiv[3];
             toode.Hind = decimal.Parse(massiiv[4]);
             toode.Pilt = massiiv[5];
-            toode.KategooriaId = int.Parse(massiiv[6]);
+            var kategooria = _context.Kategooriad.FirstOrDefault(obj => obj.Nimetus == massiiv[6]);
+            toode.KategooriaId = kategooria.Id;
 
             _context.Tooted.Update(toode);
             _context.SaveChanges();
